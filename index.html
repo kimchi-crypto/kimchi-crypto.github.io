@@ -1,85 +1,62 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+<meta charset="utf-8">
+<title>Kimchi Tracker</title>
+<!-- Latest compiled and minified CSS -->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
+
+<!-- Optional theme -->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap-theme.min.css">
+<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+<!-- Latest compiled and minified JavaScript -->
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
+<style>
+/* Bootstrap overrides */
+body {
+  /*min-height: 1000px;*/
+  padding-top: 70px;
+}
+
+.navbar-default {
+  height: 65px;
+}
+
+.navbar-default
+.navbar-brand {
+  padding-top: 0;
+  padding-bottom: 0;
+  line-height: 65px;
+  font-size: 18pt;
+}
+
+.navbar-nav > li > a {
+  padding-top: 0;
+  padding-bottom: 0;
+  line-height: 65px;
+  font-size: 14pt;
+}
+
+</style>
+
+<script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
 <script src="https://code.highcharts.com/stock/highstock.js"></script>
-<script src="https://code.highcharts.com/stock/modules/data.js"></script>
-<script src="https://code.highcharts.com/stock/modules/exporting.js"></script>
-<script src="https://code.highcharts.com/stock/modules/export-data.js"></script>
+
+<script src="https://code.highcharts.com/modules/data.js"></script>
+<script src="https://code.highcharts.com/modules/exporting.js"></script>
+
+<!-- Additional files for the Highslide popup effect -->
+<script src="https://www.highcharts.com/media/com_demo/js/highslide-full.min.js"></script>
+<script src="https://www.highcharts.com/media/com_demo/js/highslide.config.js" charset="utf-8"></script>
+<link rel="stylesheet" type="text/css" href="https://www.highcharts.com/media/com_demo/css/highslide.css" />
+
+<script>
+    // Get the CSV and create the chart
+    $.getJSON('data/crypto.json', function (chart) {
+        Highcharts.stockChart('plot', chart);
+    });
+
+</script>
 
 
-<div id="container" style="height: 400px; min-width: 310px"></div>
-
-    <script>
-        var seriesOptions = [],
-  seriesCounter = 0,
-  names = ['BTC', 'ETH', 'XRP'];
-
-/**
- * Create the chart when all data is loaded
- * @returns {undefined}
- */
-function createChart() {
-
-  Highcharts.stockChart('container', {
-
-    rangeSelector: {
-      selected: 4
-    },
-
-
-    yAxis: {
-      labels: {
-        formatter: function () {
-          return (this.value > 0 ? ' + ' : '') + this.value + '%';
-        }
-      },
-      plotLines: [{
-        value: 2,
-        width: 2,
-        color: 'silver'
-      }]
-    },
-    plotOptions: {
-      series: {
-        showInNavigator: true,
-          turboThreshold: 0
-      }
-    }, 
-
-    tooltip: {
-      pointFormat: '<span style="color:{series.color}">{series.name}</span>: <b>{point.y}</b> ({point.change}%)<br/>',
-      valueDecimals: 2,
-      split: true
-    },
-
-    series: seriesOptions
-  });
-}
-
-function success(data) {
-  var name = this.url.match(/(BTC|ETH|XRP)/)[0].toUpperCase();
-  var i = names.indexOf(name);
-  seriesOptions[i] = {
-    name: name,
-    data: data
-  };
-
-  // As we're loading the data asynchronously, we don't know what order it
-  // will arrive. So we keep a counter and create the chart when all the data is loaded.
-  seriesCounter += 1;
-
-  if (seriesCounter === names.length) {
-    createChart();
-  }
-}
-
-Highcharts.getJSON(
-  'https://kimchi-crypto.github.io/data/BTC.json',
-  success
-);
-Highcharts.getJSON(
-  'https://kimchi-crypto.github.io/data/ETH.json',
-  success
-);
-Highcharts.getJSON(
-  'https://kimchi-crypto.github.io/data/XRP.json',
-  success
-);
-    </script>
+</head>
